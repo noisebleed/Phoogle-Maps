@@ -129,16 +129,16 @@ function centerMap($lat,$long){
 		$addressData = file_get_contents($apiURL.urlencode($address));
 		
 		$results = $this->xml2array($addressData);
-		if (empty($results['kml'][Response]['Placemark']['Point']['coordinates'])){
+		if (empty($results['Point']['coordinates'])){
 			$pointer = count($this->invalidPoints);
-			$this->invalidPoints[$pointer]['lat']= $results['kml'][Response]['Placemark']['Point']['coordinates'][0];
-			$this->invalidPoints[$pointer]['long']= $results['kml'][Response]['Placemark']['Point']['coordinates'][1];
+			$this->invalidPoints[$pointer]['lat']= $results['Point']['coordinates'][0];
+			$this->invalidPoints[$pointer]['long']= $results['Point']['coordinates'][1];
 			$this->invalidPoints[$pointer]['passedAddress'] = $address;
 			$this->invalidPoints[$pointer]['htmlMessage'] = $htmlMessage;
 		  }else{
 			$pointer = count($this->validPoints);
-			$this->validPoints[$pointer]['lat']= $results['kml'][Response]['Placemark']['Point']['coordinates'];
-			$this->validPoints[$pointer]['long']= $results['kml'][Response]['Placemark']['Point']['coordinates'];
+			$this->validPoints[$pointer]['lat']= $results['Point']['coordinates'];
+			$this->validPoints[$pointer]['long']= $results['Point']['coordinates'];
 			$this->validPoints[$pointer]['passedAddress'] = $address;
 			$this->validPoints[$pointer]['htmlMessage'] = $htmlMessage;
 		}
@@ -295,7 +295,7 @@ function centerMap($lat,$long){
 		xml_set_character_data_handler($this->xml_parser,"characterData");
 		xml_parse($this->xml_parser,$xml,true);
 		xml_parser_free($this->xml_parser);
-		return $this->arrays[0];
+		return $this->arrays[3];
 
     }
     function startElement($parser, $name, $attrs){
